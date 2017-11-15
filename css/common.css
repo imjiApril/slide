@@ -1,0 +1,112 @@
+@charset "UTF-8";
+*{margin: 0; padding: 0;}
+li{list-style: none}
+img{display: block;}
+section{width: 900px; margin: auto;}
+h2{text-align: center; padding: 20px; border-bottom: 3px solid #b6b6b6;}
+
+#gallery .slide{
+  position: relative;
+  width: 900px; margin: 0 auto;
+}
+#gallery .slide .slide-contents{
+  overflow: hidden;
+  width: 780px; margin: 20px auto;
+}
+#gallery .slide .slide-contents ul{
+  position: relative;
+  width: 2600px;
+}
+#gallery .slide .slide-contents ul li{
+  float: left;width: 260px;
+}
+#gallery .slide .slide-contents ul li .wrap{
+  position: relative; border: 1px solid #fff;
+  padding:10px;
+}
+#gallery .slide .slide-contents ul li:hover .wrap{
+  border: 1px solid #ccc;
+}
+#gallery .slide .slide-contents ul li .wrap img{
+  width: 100%;
+  height: 162px;
+  padding: 5px;
+  box-sizing: border-box;
+  background: #b6b6b6;
+}
+
+/*이전/다음*/
+#gallery .slide .arrow{
+  background: none;
+  border: none;
+  font-size: 35px;
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+#gallery .slide .arrow.prev{left:0;}
+#gallery .slide .arrow.next{right:0;}
+#gallery .slide .arrow i:hover{color:red}
+
+#paging{position: absolute;left: 50%; transform: translateX(-50%);}
+#paging li{float: left;}
+#paging li a{
+  display: block;font-size: 0; width:15px;
+  height: 15px;
+  border-radius: 50%;
+  background: #b6b6b6;
+  margin: 0 5px;
+}
+#paging li a.active{
+  background: red;
+}
+
+#control{
+  position: absolute;left: 50%;
+  margin-left: 110px;
+}
+#control button{
+  font-size: 15px !important;
+  vertical-align: top; line-height: 15px;
+  background: none; border: none;
+}
+#control #play{display: none;}
+
+/*팝업*/
+#popup{
+  display: none;
+  position: fixed;
+  top:0; width: 100%; height: 100%;
+  background: rgb(244, 223, 213, 0.5);
+  z-index: 1000;
+}
+#popup #popup-contents{
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 700px;
+  box-sizing: border-box;
+  text-align: center;background: #fff;
+  border: 1px solid #000;
+}
+#popup #popup-contents .popup-header{
+  width: 100%; height: 50px; background: #000;
+}
+#popup #popup-contents .popup-header h3{color: #fff; text-align: left;
+line-height: 50px; padding-left: 20px;}
+#popup #popup-contents .popup-header button{
+  position: absolute;right: 20px; top: 20px;
+  background: none; color: #fff; border:none;
+  font-size: 20px; cursor: pointer;
+}
+#popup #popup-contents img{width: 100%; }
+#popup #popup-contents button{
+  position: absolute; top:50%;
+  transform: translateY(-50%);
+  background: none; border: none;
+  font-size: 35px; cursor: pointer;
+}
+#popup #popup-contents button.prev{left: 10px}
+#popup #popup-contents button.next{right: 10px}
+#popup #popup-contents button i:hover{color: red;}
