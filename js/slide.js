@@ -52,7 +52,7 @@ $(function(){
 
       //해당 페이징 활성화
       $('#paging a').eq(i).addClass('active');
-      console.log('인덱스값' + i);
+      //console.log('인덱스값' + i);
     }
   }
 
@@ -85,4 +85,136 @@ $(function(){
   $('#stop').click(function(){
     stop();
   })
+
+  //페이징 버튼
+  $('#paging').on('click','a',function(){
+    //자동 슬라이딩 정지
+    stop();
+    //활성화 상태 초기화
+    $('#paging a').removeClass('active');
+
+    var index = $('#paging a').index(this);
+    $('#paging a').eq(index).addClass('active');
+    $('.slide-contents ul').animate({
+      left:-(index*imageWidth)
+    },1000);
+    // console.log('섬네일의 인덱스: '+ i);
+    // console.log('paging의 인덱스: '+ index);
+    //
+    i = index;//슬라이드 이미지의 인덱스를 페이징버튼의 인덱스값으로 변경
+    // console.log('after 섬네일의 인덱스: '+ i);
+    // console.log('after paging의 인덱스: '+ index);
+  });
+
+  //모바일 환경에서 터치이벤트
+  $(document).on('touchstart','.slide-contents',function(e){
+    var event = e.originalEvent;
+    //터치한 시점의 x축의 값
+    touchX = event.touches[0].screenX;
+    console.log(touchX);
+    //슬라이드 자동정지
+    stop();
+  })
+  $(document).on('touchmove','.slide-contents',function(e){
+    var event = e.originalEvent;
+    moveTouchX = event.touches[0].screenX;//움지기였을 때 x축의 값
+    if(touchX < moveTouchX){//오른쪽
+      console.log("right");
+      arrow = $('.prev');
+    }else{//왼쪽
+      console.log("left");
+      arrow = $('.next');
+    }
+    //슬라이드 이미지 수동처리
+    gallery();
+  })
+  //모바일 환경에서 터치이벤트 끝
+
+  //마우스 휠 이벤트
+  $(document).on('mousewheel DOMMouseScroll',function(e){
+    stop();
+    var event = e.originalEvent;
+    delta= 0;
+    if(event.detail){
+      delta = event.detail*-40;//기본값이 3이기때문에 크롬와 익스 기본 값을 맞춰주려소 40 곱함
+      console.log('firefox: '+delta);
+    }else{
+      delta = event.wheelDelta;
+      console.log('ex,chrome'+delta);
+      if(delta==-120){
+        arrow = $('.next');
+      }else{
+        arrow = $('.prev');
+      }
+    }
+    gallery();
+  })//브라우저마다 마우스휠을 인식하는 메소드가 다를수 있어서 2개 사용
+
+//이미지 클릭시, 썸네일 팝업
+  // $('.wrap img').on('click',function(){
+  //   $('#popup').css({'display':'block'});
+  //
+  //   var imgSrc = $(this).attr('src');
+  //   var imgAlt = $(this).attr('alt');
+  //   console.log('imgSrc: '+ imgSrc +', imgAlt: ' + imgAlt);
+  //
+  //   var popupImg = $('#popup img').attr('src',imgSrc).attr( 'alt',imgAlt);
+  //    // -> src:imgSrc alt:imgAlt
+  //    console.log('popupImg'+popupImg);
+  //  })
+  //
+  // 닫힘버튼클릭시 닫음
+  // $('#close').on('click',function(){
+  //   $('#popup').css({'display':'none'});
+  //  })
+
+  //팝업창 열기
+  $('#gallery img').click(function(){
+    //슬라이드 정지
+    stop();
+    //이미지 제목, 소스
+    var title = $(this).attr('alt');
+    var src = $(this).attr('src');
+
+    $('#popup h3').text(title);
+    $('#popup img').attr({
+      'src':src,
+      'alt':title
+    })
+    //해당 이미지의 순서
+    imgIndex = $('#gallery img').index(this);
+    //console.log(imgIndex);
+    $('#popup').fadeIn();
+  })
+
+  //팝업창 닫기
+  $('#close').click(function(){
+    $('#popup').fadeOut();
+  })
+
+  //팝업창의 이전/다음버튼
+  $('#popup .arrow').click(function(){
+    if($(this).hasClass('next')){
+      imgIndex++;
+    }else{
+      imgIndex--;
+    }
+    //인덱스 최대/최소 검사
+    if(imgIndex >= imageLength){imgIndex=0;}
+    if(imgIndex < 0){imgIndex = imageLength-1;}
+    console.log('인덱스: ' + imgIndex);
+
+    var src =$('.slide-contents img').eq(imgIndex).attr('src');
+    var title = $('.slide-contents img').eq(imgIndex).attr('alt');
+
+    console.log(src, title);
+    ///팝업 이미지 소스변경
+    $('#popup img').attr({
+      'src':src,
+      'alt':title
+    })
+    //팝업의 이미지 제목변경
+    $('#popup h3').text(title);
+  })
+
 })
